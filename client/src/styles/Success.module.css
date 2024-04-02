@@ -1,0 +1,94 @@
+.successPageContainer{
+    height: 94vh;
+    width: 100vw;
+    padding: 4vh 4vw;
+    overflow-x: hidden;
+}
+.company{
+    height: 6vh ;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+    & img{
+        height: 4rem;
+        width: 4rem;
+    }
+}
+.flexbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    width: 92vw;
+}
+.success{
+    height: 60vh;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5vh;
+    letter-spacing: 0.05rem;
+    border: 3px solid #E3E3E3;
+    box-shadow: 14px 16px 23px 2px #0000001C;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -ms-border-radius: 0.4rem;
+    -o-border-radius: 0.4rem;
+}
+.success img{
+    height: 14vh;
+    width: 8vw;
+}
+.success div{
+    text-align: center;
+    & h1{
+        margin-bottom: 2vh;
+    }
+}
+.success p{
+    font-size: 1.5rem;
+    color: #969696;
+}
+.success .goBackButton{
+    width: 20vw;
+    height: 5vh;
+    font-size: 1.5rem;
+    border: none;
+    background-color: var(--violet-color);
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+}
+
+@media (max-width: 768px){
+    .successPageContainer{
+        height: 82vh;
+        padding: 10vh 4vw 0 4vw;
+    }
+    .flexbox{
+        height: 66vh;
+    }
+    .company{
+        display: none;
+    }
+    .success{
+        height: 55vh;
+        width: 80vw;
+    }
+    .success img{
+        height: 10vh;
+        width: 20vw;
+    }
+    .success .goBackButton{
+        width: 60vw;
+    }
+}

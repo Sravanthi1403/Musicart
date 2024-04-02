@@ -1,0 +1,334 @@
+.checkoutContainer{
+    margin-top: 18vh;
+    height: auto;
+    width: 100vw;
+    padding:  0rem 4vw;
+    letter-spacing: 0.05rem;
+    overflow-y: scroll;
+}
+.backButton{
+    height: 5vh;
+    margin-bottom: 2vh;
+}
+.backButton button{
+    padding: 0rem 1rem;
+    width: max-content;
+    height: 5vh;
+    font-size: 1.5rem;
+    border: none;
+    background-color: var(--violet-color);
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+}
+.checkoutHeading{
+    height: 4vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2vh;
+}
+.parent{
+    display: flex;
+    height: auto;
+}
+.child1{
+    height: auto;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+.orderDeliveryDetails{
+    width: 100%;
+    height: auto;
+    border-bottom: 0.2rem solid #E1E1E1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2vh;
+    & > div{
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+}
+.name{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #B52B00;
+}
+.values p{
+    color: #797979;
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    margin-top:1rem;
+}
+.delivery{
+    padding-bottom: 1rem;
+    border-bottom: 0.2rem solid #E1E1E1;
+    & textarea{
+        border: 2px solid #ccc;
+        border-radius: 0.4rem;
+        background-color: #fff;
+        -webkit-border-radius: 0.4rem;
+        -moz-border-radius: 0.4rem;
+        -ms-border-radius: 0.4rem;
+        -o-border-radius: 0.4rem;
+        resize: none;
+        padding: 5px;
+        font-size: 1.3rem;
+        outline: none;
+        width: 30vw;
+    }
+}
+.addressStaticValue{
+    width: 30vw;
+    height: 5vh;
+}
+.paymentStaticValue{
+    width: 30vw;
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    padding-left:1rem;
+    font-size: 1.3rem;
+    border: 2px solid #ccc;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -ms-border-radius: 0.4rem;
+    -o-border-radius: 0.4rem;
+}
+.payment{
+    padding-bottom: 1rem;
+    border-bottom: 0.2rem solid #E1E1E1;
+}
+.payment .values select{
+    padding:1rem;
+    width: 30vw;
+    font-size: 1.3rem;
+    border: 2px solid #ccc;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -ms-border-radius: 0.4rem;
+    -o-border-radius: 0.4rem;
+    & option{
+        font-size: 1.3rem;
+    }
+}
+.reviewItems .values{
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+.reviewItems .values .images{
+    width: 30vw;
+    height: 30vh;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding:1rem;
+    gap: 1vw;
+    overflow-y: scroll;
+}
+.reviewItems .values .images .image{
+    width: 8vw;
+    height: 15vh;
+    background-color: #fff;
+    
+}
+.reviewItems .values .images .image img{
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--violet-color);
+    cursor: pointer;
+    border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
+    -ms-border-radius: 1rem;
+    -o-border-radius: 1rem;
+}
+.imageDetails{
+    padding: 0rem 1rem;
+}
+.imageDetails p:last-of-type{
+    color: #000;
+}
+
+.totalOrderValue{
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 5vw;
+    border: 0.2rem solid #E1E1E1;
+    margin-bottom: 10vh;
+    padding: 1rem;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -ms-border-radius: 0.4rem;
+    -o-border-radius: 0.4rem;
+    & p{
+        font-size: 1.2rem;
+    }
+}
+.placeOrderButton{
+    cursor: pointer;
+    border: none;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    font-size: 1.5rem;
+    background-color: var(--btn-bg-color3);
+    font-weight: 500;
+    height: 5vh;
+    width: 12vw;
+}
+
+.child2{
+    height: 100%;
+    width: 30%;
+    padding: 0 2vw;
+    
+}
+
+.orderDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    padding: 2rem;
+    border:0.2rem solid #E1E1E1;
+    border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -ms-border-radius: 0.4rem;
+    -o-border-radius: 0.4rem;
+}
+.orderDetails button{
+    width: 100%;
+}
+.orderDetails .policyText{
+    font-size: 1rem;
+    text-align: center;
+    padding: 2vh 0;
+    border-bottom: 0.2rem solid #E1E1E1;
+}
+.orderSummary{
+    padding: 2vh 0;
+}
+.orderSummary div{
+    display: flex;
+    justify-content:space-between;
+    border-bottom: 0.2rem solid #E1E1E1;
+    padding: 2vh 0;
+}
+.orderSummary p{
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #797979;
+}
+.orderTotal{
+    display: flex;
+    justify-content: space-between;
+}
+@media (max-width: 768px){
+    .checkoutContainer{
+        margin-top: 14vh;
+    }
+    .backButton div{
+        height: 3rem;
+        width: 3rem;
+        box-shadow: 0px 1px 4px 0px #00000054;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        padding:0.7rem 0.4rem;
+        & img{
+            height: 1.5rem;
+            width: 2rem;
+        }
+
+    }
+    .parent{
+        flex-direction: column;
+    }
+    .child1{
+        width: 100%;
+    }
+    .child2{
+        width: 100%;
+        margin-bottom: 15vh;
+    }
+    .values{
+        width: 100%;
+    }
+    .orderDeliveryDetails{
+        & div{
+            flex-direction: column;
+        }
+    }
+    .delivery{
+        & textarea{
+            width: 100%;
+        }
+    }
+    .delivery .values{
+        padding: 3vw;
+    }
+    .payment .values{
+        padding: 3vw;
+    }
+    .payment .values select{
+        width: 100%;
+    }
+    .reviewItems .values{
+        padding: 3vw;
+    }
+    .reviewItems .values .images{
+        width: 100%;
+        padding: 0.5rem 1rem;
+        gap: 2vw;
+    }
+    .reviewItems .values .images .image{
+        height:14vh;
+        width: auto;
+    }
+    .placeOrderButton{
+        width: 100%;
+    }
+    .totalOrderValue{
+        display: none;
+    }
+    .orderSummary .values{
+        width: auto;
+    }
+    .orderDetails .placeOrder{
+        display: none;
+    }
+    .orderDetails .policyText{
+        border: none;
+    }
+    .orderTotal{
+        padding: 2vh 0;
+        border-bottom: 0.2rem solid #E1E1E1;
+        margin-bottom: 2vh;
+    }
+    .addressStaticValue{
+        width: 100%;
+    }
+    .paymentStaticValue{
+        width: 100%;
+    }
+
+}

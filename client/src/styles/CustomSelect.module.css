@@ -1,0 +1,54 @@
+.custom-select {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.custom-select:last-of-type{
+  width: 14rem;
+}
+  
+.placeholder {
+  background-color: var(--btn-bg-color1);
+  color:#000000;
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding: 0.5rem 3rem 0.5rem 2rem;
+  border: none;
+  border-radius:  3rem ;
+  -webkit-border-radius:  3rem ;
+  -moz-border-radius:  3rem ;
+  -ms-border-radius:  3rem ;
+  -o-border-radius:  3rem ;
+}
+
+.optionsContainer {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%;
+  font-size: 1.2rem; 
+  max-height: 150px;
+  overflow-y: auto; 
+  background-color: #fff;
+  border: 1px solid #ccc; 
+  border-top: none; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  display: none; 
+}
+.optionsContainer.open {
+  display: block; 
+}
+.options {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
+}
+.options li {
+  padding: 4px 10px; 
+  cursor: pointer; 
+}
+  
+.options li:hover {
+  background-color: #0066FF;
+  color: #fff; 
+}
