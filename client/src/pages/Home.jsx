@@ -152,8 +152,8 @@ export const Home = () => {
       });
       if (response.status >= 200 && response.status < 300) {
         console.log(response.data.message);
-        toggleFeedbackModal();
         setLoading(false);
+        toggleFeedbackModal();
         feedbackMessageRef.current = "";
         setFeedbackType("");
       }
@@ -609,8 +609,8 @@ export const Home = () => {
           </section>
         </div>
         {isMobile ? null : (
-          <div className={styles.feedback} onClick={toggleFeedbackModal}>
-            <div className={styles.feedbackImage}>
+          <div className={styles.feedback}>
+            <div className={styles.feedbackImage} onClick={toggleFeedbackModal}>
               <img src={feedback} alt="" />
             </div>
             <div
@@ -642,7 +642,11 @@ export const Home = () => {
               </div>
               {error && <span className="errorText">{error}</span>}
               <div className={styles.feedbackSubmitButton}>
-                <button onClick={() => handleFeedbackSubmit()}>
+                <button
+                  onClick={() => {
+                    handleFeedbackSubmit();
+                  }}
+                >
                   {loading ? "Please wait..." : "Submit"}
                 </button>
               </div>

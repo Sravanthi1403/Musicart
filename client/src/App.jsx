@@ -14,7 +14,8 @@ import { Logout } from "./components/Logout";
 import "./index.css";
 import { PageNotFound } from "./pages/PageNotFound";
 
-export const server = "http://localhost:8000/api/v1";
+export const server = "https://musicart-backend-a2u2.onrender.com/api";
+// export const server = "http://localhost:5173";
 
 const App = () => {
   return (

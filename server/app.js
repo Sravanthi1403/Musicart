@@ -31,11 +31,11 @@ app.get('/', (req, res) => {
 })
 // routes 
 
-app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/products', productRoutes);
-app.use('/api/v1/cart', cartRoutes);
-app.use('/api/v1/orders', orderRoutes);
-app.use('/api/v1/feedbacks', feedbackRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/feedbacks', feedbackRoutes);
 
 
 module.exports = app
