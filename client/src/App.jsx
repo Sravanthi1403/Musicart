@@ -14,7 +14,7 @@ import { Logout } from "./components/Logout";
 import "./index.css";
 import { PageNotFound } from "./pages/PageNotFound";
 
-export const server = "https://musicart-six.vercel.app";
+export const server = "https://musicart-backend-a2u2.onrender.com";
 
 const App = () => {
   return (
