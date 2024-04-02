@@ -14,7 +14,7 @@ import { Logout } from "./components/Logout";
 import "./index.css";
 import { PageNotFound } from "./pages/PageNotFound";
 
-export const server = "http://localhost:8000/api/v1";
+export const server = "musicart-six.vercel.app";
 
 const App = () => {
   return (
