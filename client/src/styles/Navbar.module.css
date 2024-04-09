@@ -178,4 +178,13 @@ header{
     .logo_name{
         color:#ffffff;
     }
+    .search{
+        & input{
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        & input::placeholder{
+            font-size: 1.5rem;
+        }
+    }
 }

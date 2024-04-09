@@ -559,7 +559,7 @@
         height: 0;
     }
     .cardsSection{
-        margin-bottom: 15vh;
+        margin-bottom: 30vh;
     }
     .cardsSection .gridStyles{
         grid-template-columns: repeat(2, 1fr);
