@@ -313,7 +313,7 @@ export const Home = () => {
                           src={cart}
                           alt=""
                           className={styles.cartImage}
-                          onClick={() => handleAddToCart(product._id)}
+                          onClick={() => handleAddToCart(product._id, user._id)}
                         />
                       ) : null}
                       <Link to={`/product/${product._id}`}>
@@ -377,7 +377,9 @@ export const Home = () => {
                             src={cart}
                             alt=""
                             className={styles.cartImage}
-                            onClick={() => handleAddToCart(product._id)}
+                            onClick={() =>
+                              handleAddToCart(product._id, user._id)
+                            }
                           />
                         ) : null}
                         <Link to={`/product/${product._id}`}>
@@ -441,7 +443,9 @@ export const Home = () => {
                             src={cart}
                             alt=""
                             className={styles.cartImage}
-                            onClick={() => handleAddToCart(product._id)}
+                            onClick={() =>
+                              handleAddToCart(product._id, user._id)
+                            }
                           />
                         ) : null}
                         <Link to={`/product/${product._id}`}>
@@ -506,7 +510,7 @@ export const Home = () => {
                           src={cart}
                           alt=""
                           className={styles.cartImage}
-                          onClick={() => handleAddToCart(product._id)}
+                          onClick={() => handleAddToCart(product._id, user._id)}
                         />
                       ) : null}
                       <Link to={`/product/${product._id}`}>
@@ -568,7 +572,7 @@ export const Home = () => {
                           src={cart}
                           alt=""
                           className={styles.cartImage}
-                          onClick={() => handleAddToCart(product._id)}
+                          onClick={() => handleAddToCart(product._id, user._id)}
                         />
                       ) : null}
                       <Link to={`/product/${product._id}`}>

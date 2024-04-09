@@ -204,10 +204,10 @@ export const AppContextProvider = ({ children }) => {
     }, delay);
   }, []);
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, userId) => {
     try {
       await axios.post(
-        `${server}/cart/addProductToCart?productId=${productId}`
+        `${server}/cart/addProductToCart?productId=${productId}&userId=${userId}`
       );
       console.log("Product added to cart successfully!");
     } catch (error) {

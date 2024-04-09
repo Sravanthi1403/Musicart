@@ -64,7 +64,7 @@ export const SingleProductDetails = () => {
               <Link to="/viewcart">
                 <button
                   className={styles.buyNowButton}
-                  onClick={() => handleAddToCart(id)}
+                  onClick={() => handleAddToCart(id, user._id)}
                 >
                   Buy Now
                 </button>
@@ -119,7 +119,7 @@ export const SingleProductDetails = () => {
                     <Link to="/viewcart">
                       <button
                         className={styles.addCartButton}
-                        onClick={() => handleAddToCart(id)}
+                        onClick={() => handleAddToCart(id, user._id)}
                       >
                         Add to cart
                       </button>
@@ -135,7 +135,7 @@ export const SingleProductDetails = () => {
                     <Link to="/viewcart">
                       <button
                         className={styles.buyNowButton}
-                        onClick={() => handleAddToCart(id)}
+                        onClick={() => handleAddToCart(id, user._id)}
                       >
                         Buy Now
                       </button>

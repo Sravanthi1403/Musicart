@@ -58,7 +58,7 @@ export const Checkout = () => {
       );
       if (response.status >= 200 && response.status < 300) {
         const deleteCartResponse = await axios.delete(
-          `${server}/cart/deleteAllItems`,
+          `${server}/cart/deleteAllItems?userId=${user._id}`,
           { withCredentials: true }
         );
         if (deleteCartResponse.status === 200) {
