@@ -4,12 +4,10 @@ const { ErrorHandler } = require('../utils/ErrorHandler');
 const addProductToCart = async (req, res, next) =>{
     try {
         const { productId } = req.query;
-        const userId = req.user._id;
-
-        let cartItem = await Cart.findOne({ userId, productId });
+        let cartItem = await Cart.findOne({ productId });
     
         if (!cartItem) {
-          cartItem = new Cart({ userId, productId, quantity: 1 });
+          cartItem = new Cart({ productId, quantity: 1 });
         } else {
           if (cartItem.quantity >= 8) {
             return next(new ErrorHandler(400,'Quantity limit exceeded'));
@@ -28,8 +26,7 @@ const addProductToCart = async (req, res, next) =>{
 
 const getCartProducts = async (req, res, next) =>{
   try {
-    const userId = req.user._id;
-    const cartItems = await Cart.find({ userId }).populate("productId");
+    const cartItems = await Cart.find().populate("productId");
     if(!cartItems){
       return next(new ErrorHandler(404, 'Cart is Empty!!'));
     }
@@ -59,8 +56,7 @@ const updateCartItemQuantity = async (req, res, next) => {
 
 const deleteAllItems = async (req, res, next ) => {
   try {
-    const userId = req.user._id;
-    await Cart.deleteMany({ userId });
+    await Cart.deleteMany({});
     res.status(200).json({ message: 'Cart items deleted successfully' });
   } catch (error) {
     console.error('Error deleting cart items:', error);
