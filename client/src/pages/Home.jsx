@@ -612,51 +612,56 @@ export const Home = () => {
             </ul>
           </section>
         </div>
-        {isMobile ? null : (
-          <div className={styles.feedback}>
-            <div className={styles.feedbackImage} onClick={toggleFeedbackModal}>
-              <img src={feedback} alt="" />
+        {user ? (
+          isMobile ? null : (
+            <div className={styles.feedback}>
+              <div
+                className={styles.feedbackImage}
+                onClick={toggleFeedbackModal}
+              >
+                <img src={feedback} alt="" />
+              </div>
+              <div
+                className={`${styles.feedbackFormModal} ${
+                  feedbackModal ? styles.openFeedbackModal : ""
+                }`}
+              >
+                <div className={styles.feedbackType}>
+                  <h2>Type of feedback</h2>
+                  <CustomSelect
+                    error={error}
+                    options={feedbackTypeOptions}
+                    placeholder="Choose the Type"
+                    onSelect={handleFeedbackTypeChange}
+                  />
+                </div>
+                {error && <span className="errorText">{error}</span>}
+                <div className={styles.feedbackData}>
+                  <h2>Feedback</h2>
+                  <textarea
+                    style={error ? { border: "2px solid red" } : {}}
+                    value={feedbackMessageRef.current.value}
+                    onChange={handleFeedbackMessageChange}
+                    maxLength={100}
+                    rows={5}
+                    placeholder="Type your feedback..."
+                  />
+                  {/* <p>Characters remaining: {100 - address.length}</p> */}
+                </div>
+                {error && <span className="errorText">{error}</span>}
+                <div className={styles.feedbackSubmitButton}>
+                  <button
+                    onClick={() => {
+                      handleFeedbackSubmit();
+                    }}
+                  >
+                    {loading ? "Please wait..." : "Submit"}
+                  </button>
+                </div>
+              </div>
             </div>
-            <div
-              className={`${styles.feedbackFormModal} ${
-                feedbackModal ? styles.openFeedbackModal : ""
-              }`}
-            >
-              <div className={styles.feedbackType}>
-                <h2>Type of feedback</h2>
-                <CustomSelect
-                  error={error}
-                  options={feedbackTypeOptions}
-                  placeholder="Choose the Type"
-                  onSelect={handleFeedbackTypeChange}
-                />
-              </div>
-              {error && <span className="errorText">{error}</span>}
-              <div className={styles.feedbackData}>
-                <h2>Feedback</h2>
-                <textarea
-                  style={error ? { border: "2px solid red" } : {}}
-                  value={feedbackMessageRef.current.value}
-                  onChange={handleFeedbackMessageChange}
-                  maxLength={100}
-                  rows={5}
-                  placeholder="Type your feedback..."
-                />
-                {/* <p>Characters remaining: {100 - address.length}</p> */}
-              </div>
-              {error && <span className="errorText">{error}</span>}
-              <div className={styles.feedbackSubmitButton}>
-                <button
-                  onClick={() => {
-                    handleFeedbackSubmit();
-                  }}
-                >
-                  {loading ? "Please wait..." : "Submit"}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+          )
+        ) : null}
       </main>
     </>
   );
