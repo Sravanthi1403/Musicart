@@ -13,7 +13,8 @@ const cors = require("cors");
 dotenv.config({path: './.env'});
 app.use(cookieParser());
 app.use(cors({
-    origin : 'https://musicart-frontend-xi.vercel.app',
+    // origin : 'https://musicart-frontend-xi.vercel.app',
+    origin : 'http://localhost:5173',
     methods : [ "GET","POST","PUT","PATCH", "DELETE" ],
     credentials : true,
 }));
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.use(errorMiddleware);
+
 
 app.get('/', (req, res) => {
     res.json({
@@ -37,5 +38,6 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 
+app.use(errorMiddleware);
 
 module.exports = app
