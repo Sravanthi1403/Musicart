@@ -12,6 +12,9 @@ export const Checkout = () => {
 
   const { isMobile, user, cartProducts, fetchCartProducts } = useAppContext();
 
+  console.log("Checkout cartProducts:", cartProducts);
+  console.log("fetchCartProducts:", fetchCartProducts);
+
   const address = useRef("");
 
   const [paymentMethodOption, setPaymentMethodOption] = useState("");
@@ -22,6 +25,8 @@ export const Checkout = () => {
 
   const handleSelectedProduct = (productId) => {
     const product = cartProducts.find((product) => product._id === productId);
+    console.log("Selected product:", product);
+
     setSelectedProduct(product);
   };
 
@@ -47,9 +52,13 @@ export const Checkout = () => {
       username: user.username,
       address,
       paymentMethod: paymentMethodOption,
-      cartProducts,
-      orderPrice: sum,
+      orderPrice: Number(sum),
+      cartProducts: cartProducts.map((item) => ({
+        productId: item.productId._id,
+        quantity: item.quantity,
+      })),
     };
+
     try {
       const response = await axios.post(
         `${server}/orders/placeOrder`,
@@ -69,12 +78,19 @@ export const Checkout = () => {
         console.log(response.data.message);
         address.current = "";
         setPaymentMethodOption("");
-        navigate("/success");
       }
     } catch (error) {
       console.error("Error placing order:", error);
     }
   };
+
+  if (!cartProducts || cartProducts.length === 0) {
+    return (
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        <h2>Loading checkout details...</h2>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -101,7 +117,6 @@ export const Checkout = () => {
                 <div className={styles.values}>
                   <p>{user.username}</p>
                   <textarea
-                    value={address.current.value}
                     onChange={handleAddressChange}
                     maxLength={100}
                     rows={3}
@@ -131,36 +146,35 @@ export const Checkout = () => {
                 <div className={styles.name}>3. Review items and delivery</div>
                 <div className={styles.values}>
                   <div className={styles.images}>
-                    {cartProducts.map((product) => (
-                      <>
-                        <div className={styles.image}>
+                    {cartProducts.map((product) => {
+                      return (
+                        <div key={product._id} className={styles.image}>
                           <img
-                            key={product._id}
-                            src={product.productId.carousel_images[0]}
-                            onClick={() => {
-                              handleSelectedProduct(product._id);
-                            }}
+                            src={
+                              product.productId?.carousel_images
+                                ? product.productId.carousel_images[0]
+                                : ""
+                            }
+                            onClick={() => handleSelectedProduct(product._id)}
                           />
                         </div>
-                      </>
-                    ))}
+                      );
+                    })}
                   </div>
                   <div className={styles.imageDetails}>
                     <h2>
-                      {selectedProduct
-                        ? selectedProduct.productId.name
-                        : cartProducts
-                        ? cartProducts[0].productId.name
-                        : ""}
+                      {selectedProduct?.productId?.name ||
+                        cartProducts?.[0]?.productId?.name ||
+                        ""}
                     </h2>
+
                     <p>
                       Color :&nbsp;&nbsp;
-                      {selectedProduct
-                        ? selectedProduct.productId.color
-                        : cartProducts
-                        ? cartProducts[0].productId.color
-                        : ""}
+                      {selectedProduct?.productId?.color ||
+                        cartProducts?.[0]?.productId?.color ||
+                        ""}
                     </p>
+
                     <p>
                       Estimated delivery: <br /> Monday - FREE Standard Delivery
                     </p>

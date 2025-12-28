@@ -1,5 +1,5 @@
 .container{
-    width: 100vw;
+    width: 100%;
     height: auto;
     padding:2vh 5vw;
     margin-top: 18vh;
@@ -9,7 +9,7 @@
     justify-content: space-between;
     padding: 0rem 4rem;
     align-items:flex-end;
-    width: 90vw;
+    width: 100%;
     height: 25vh;
     margin-bottom: 3.5vh;
     background: linear-gradient(90deg, #7286B4 0%, #E794CE 100%);
@@ -49,7 +49,7 @@
 }
 
 .search{
-    width:90vw;
+    width:100%;
     height: 7vh;
     padding: 0rem 2rem ;
     display: flex;
@@ -75,7 +75,7 @@
 }
 
 .optionsSection{
-    width: 90vw;
+    width: 100%;
     height: 7vh;
     padding: 0rem;
     margin-bottom: 2.5rem;
@@ -200,7 +200,7 @@
 
 /* CARDS SECTION */
 .cardsSection{
-    width: 90vw ;
+    width: 100% ;
     height: auto;
     background-color:transparent;
     margin-bottom: 5vh;

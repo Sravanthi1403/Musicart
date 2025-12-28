@@ -287,8 +287,74 @@ export const Home = () => {
               }
             >
               {loading ? "Loading..." : ""}
-              {isSearching
-                ? searchResults.map((product) => (
+              {isSearching && searchResults.length === 0 ? (
+                <p style={{ fontSize: "1.6rem" }}>No products found</p>
+              ) : isSearching ? (
+                searchResults.map((product) => (
+                  <li
+                    key={product._id}
+                    className={
+                      isGridViewActive
+                        ? styles.gridViewProductDetails
+                        : styles.listViewProductDetails
+                    }
+                  >
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.gridViewProductImage
+                            : styles.listViewProductImage
+                        }
+                      >
+                        <img src={product.carousel_images[0]} alt="" />
+                      </div>
+                    </Link>
+                    {user ? (
+                      <img
+                        src={cart}
+                        alt=""
+                        className={styles.cartImage}
+                        onClick={() => handleAddToCart(product._id, user._id)}
+                      />
+                    ) : null}
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.details
+                            : `${styles.details} ${styles.listViewDetails}`
+                        }
+                      >
+                        <h3 className={styles.productName}>
+                          {isGridViewActive
+                            ? getClippedTitle(product.name)
+                            : product.name}
+                        </h3>
+                        <p className={styles.price}>
+                          Price - ₹ {product.price}
+                        </p>
+                        <p>
+                          {product.color}&nbsp;|&nbsp;{product.category}
+                        </p>
+                        {isGridViewActive ? null : (
+                          <>
+                            <p>{product.description}</p>
+                            <button className={styles.detailsButton}>
+                              Details
+                            </button>
+                          </>
+                        )}
+                        {isGridViewActive ? (
+                          <div className={styles.tooltip}>{product.name}</div>
+                        ) : null}
+                      </div>
+                    </Link>
+                  </li>
+                ))
+              ) : sortingOption !== "" ? (
+                isFiltersEmpty ? (
+                  sortedProducts.map((product) => (
                     <li
                       key={product._id}
                       className={
@@ -350,142 +416,8 @@ export const Home = () => {
                       </Link>
                     </li>
                   ))
-                : sortingOption !== ""
-                ? isFiltersEmpty
-                  ? sortedProducts.map((product) => (
-                      <li
-                        key={product._id}
-                        className={
-                          isGridViewActive
-                            ? styles.gridViewProductDetails
-                            : styles.listViewProductDetails
-                        }
-                      >
-                        <Link to={`/product/${product._id}`}>
-                          <div
-                            className={
-                              isGridViewActive
-                                ? styles.gridViewProductImage
-                                : styles.listViewProductImage
-                            }
-                          >
-                            <img src={product.carousel_images[0]} alt="" />
-                          </div>
-                        </Link>
-                        {user ? (
-                          <img
-                            src={cart}
-                            alt=""
-                            className={styles.cartImage}
-                            onClick={() =>
-                              handleAddToCart(product._id, user._id)
-                            }
-                          />
-                        ) : null}
-                        <Link to={`/product/${product._id}`}>
-                          <div
-                            className={
-                              isGridViewActive
-                                ? styles.details
-                                : `${styles.details} ${styles.listViewDetails}`
-                            }
-                          >
-                            <h3 className={styles.productName}>
-                              {isGridViewActive
-                                ? getClippedTitle(product.name)
-                                : product.name}
-                            </h3>
-                            <p className={styles.price}>
-                              Price - ₹ {product.price}
-                            </p>
-                            <p>
-                              {product.color}&nbsp;|&nbsp;{product.category}
-                            </p>
-                            {isGridViewActive ? null : (
-                              <>
-                                <p>{product.description}</p>
-                                <button className={styles.detailsButton}>
-                                  Details
-                                </button>
-                              </>
-                            )}
-                            {isGridViewActive ? (
-                              <div className={styles.tooltip}>
-                                {product.name}
-                              </div>
-                            ) : null}
-                          </div>
-                        </Link>
-                      </li>
-                    ))
-                  : filteredProducts.map((product) => (
-                      <li
-                        key={product._id}
-                        className={
-                          isGridViewActive
-                            ? styles.gridViewProductDetails
-                            : styles.listViewProductDetails
-                        }
-                      >
-                        <Link to={`/product/${product._id}`}>
-                          <div
-                            className={
-                              isGridViewActive
-                                ? styles.gridViewProductImage
-                                : styles.listViewProductImage
-                            }
-                          >
-                            <img src={product.carousel_images[0]} alt="" />
-                          </div>
-                        </Link>
-                        {user ? (
-                          <img
-                            src={cart}
-                            alt=""
-                            className={styles.cartImage}
-                            onClick={() =>
-                              handleAddToCart(product._id, user._id)
-                            }
-                          />
-                        ) : null}
-                        <Link to={`/product/${product._id}`}>
-                          <div
-                            className={
-                              isGridViewActive
-                                ? styles.details
-                                : `${styles.details} ${styles.listViewDetails}`
-                            }
-                          >
-                            <h3 className={styles.productName}>
-                              {isGridViewActive
-                                ? getClippedTitle(product.name)
-                                : product.name}
-                            </h3>
-                            <p className={styles.price}>
-                              Price - ₹ {product.price}
-                            </p>
-                            <p>
-                              {product.color}&nbsp;|&nbsp;{product.category}
-                            </p>
-                            {isGridViewActive ? null : (
-                              <>
-                                <p>{product.description}</p>
-                                <button className={styles.detailsButton}>
-                                  Details
-                                </button>
-                              </>
-                            )}
-                            {isGridViewActive ? (
-                              <div className={styles.tooltip}>
-                                {product.name}
-                              </div>
-                            ) : null}
-                          </div>
-                        </Link>
-                      </li>
-                    ))
-                : isFiltersEmpty
-                ? products.map((product) => (
+                ) : (
+                  filteredProducts.map((product) => (
                     <li
                       key={product._id}
                       className={
@@ -547,68 +479,134 @@ export const Home = () => {
                       </Link>
                     </li>
                   ))
-                : filteredProducts.map((product) => (
-                    <li
-                      key={product._id}
-                      className={
-                        isGridViewActive
-                          ? styles.gridViewProductDetails
-                          : styles.listViewProductDetails
-                      }
-                    >
-                      <Link to={`/product/${product._id}`}>
-                        <div
-                          className={
-                            isGridViewActive
-                              ? styles.gridViewProductImage
-                              : styles.listViewProductImage
-                          }
-                        >
-                          <img src={product.carousel_images[0]} alt="" />
-                        </div>
-                      </Link>
-                      {user ? (
-                        <img
-                          src={cart}
-                          alt=""
-                          className={styles.cartImage}
-                          onClick={() => handleAddToCart(product._id, user._id)}
-                        />
-                      ) : null}
-                      <Link to={`/product/${product._id}`}>
-                        <div
-                          className={
-                            isGridViewActive
-                              ? styles.details
-                              : `${styles.details} ${styles.listViewDetails}`
-                          }
-                        >
-                          <h3 className={styles.productName}>
-                            {isGridViewActive
-                              ? getClippedTitle(product.name)
-                              : product.name}
-                          </h3>
-                          <p className={styles.price}>
-                            Price - ₹ {product.price}
-                          </p>
-                          <p>
-                            {product.color}&nbsp;|&nbsp;{product.category}
-                          </p>
-                          {isGridViewActive ? null : (
-                            <>
-                              <p>{product.description}</p>
-                              <button className={styles.detailsButton}>
-                                Details
-                              </button>
-                            </>
-                          )}
-                          {isGridViewActive ? (
-                            <div className={styles.tooltip}>{product.name}</div>
-                          ) : null}
-                        </div>
-                      </Link>
-                    </li>
-                  ))}
+                )
+              ) : isFiltersEmpty ? (
+                products.map((product) => (
+                  <li
+                    key={product._id}
+                    className={
+                      isGridViewActive
+                        ? styles.gridViewProductDetails
+                        : styles.listViewProductDetails
+                    }
+                  >
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.gridViewProductImage
+                            : styles.listViewProductImage
+                        }
+                      >
+                        <img src={product.carousel_images[0]} alt="" />
+                      </div>
+                    </Link>
+                    {user ? (
+                      <img
+                        src={cart}
+                        alt=""
+                        className={styles.cartImage}
+                        onClick={() => handleAddToCart(product._id, user._id)}
+                      />
+                    ) : null}
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.details
+                            : `${styles.details} ${styles.listViewDetails}`
+                        }
+                      >
+                        <h3 className={styles.productName}>
+                          {isGridViewActive
+                            ? getClippedTitle(product.name)
+                            : product.name}
+                        </h3>
+                        <p className={styles.price}>
+                          Price - ₹ {product.price}
+                        </p>
+                        <p>
+                          {product.color}&nbsp;|&nbsp;{product.category}
+                        </p>
+                        {isGridViewActive ? null : (
+                          <>
+                            <p>{product.description}</p>
+                            <button className={styles.detailsButton}>
+                              Details
+                            </button>
+                          </>
+                        )}
+                        {isGridViewActive ? (
+                          <div className={styles.tooltip}>{product.name}</div>
+                        ) : null}
+                      </div>
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                filteredProducts.map((product) => (
+                  <li
+                    key={product._id}
+                    className={
+                      isGridViewActive
+                        ? styles.gridViewProductDetails
+                        : styles.listViewProductDetails
+                    }
+                  >
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.gridViewProductImage
+                            : styles.listViewProductImage
+                        }
+                      >
+                        <img src={product.carousel_images[0]} alt="" />
+                      </div>
+                    </Link>
+                    {user ? (
+                      <img
+                        src={cart}
+                        alt=""
+                        className={styles.cartImage}
+                        onClick={() => handleAddToCart(product._id, user._id)}
+                      />
+                    ) : null}
+                    <Link to={`/product/${product._id}`}>
+                      <div
+                        className={
+                          isGridViewActive
+                            ? styles.details
+                            : `${styles.details} ${styles.listViewDetails}`
+                        }
+                      >
+                        <h3 className={styles.productName}>
+                          {isGridViewActive
+                            ? getClippedTitle(product.name)
+                            : product.name}
+                        </h3>
+                        <p className={styles.price}>
+                          Price - ₹ {product.price}
+                        </p>
+                        <p>
+                          {product.color}&nbsp;|&nbsp;{product.category}
+                        </p>
+                        {isGridViewActive ? null : (
+                          <>
+                            <p>{product.description}</p>
+                            <button className={styles.detailsButton}>
+                              Details
+                            </button>
+                          </>
+                        )}
+                        {isGridViewActive ? (
+                          <div className={styles.tooltip}>{product.name}</div>
+                        ) : null}
+                      </div>
+                    </Link>
+                  </li>
+                ))
+              )}
             </ul>
           </section>
         </div>

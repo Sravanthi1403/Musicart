@@ -4,6 +4,7 @@ import {
   useEffect,
   useContext,
   useCallback,
+  useRef,
 } from "react";
 import { server } from "../App";
 import axios from "axios";
@@ -11,52 +12,53 @@ import { Navigate } from "react-router-dom";
 
 const AppContext = createContext();
 
+/* localStorage parser */
+const safeParse = (key, fallback) => {
+  try {
+    const value = localStorage.getItem(key);
+    if (!value || value === "undefined") return fallback;
+    return JSON.parse(value);
+  } catch (err) {
+    return fallback;
+  }
+};
+
+// eslint-disable-next-line react/prop-types
 export const AppContextProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState();
+  // UI State
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Auth State
+  const [isLoggedIn, setIsLoggedIn] = useState(() =>
+    safeParse("isLoggedIn", false)
+  );
+  const [user, setUser] = useState(() => safeParse("userProfile", null));
+
+  // Product State
+  const [products, setProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
+
+  // Cart State
+  const [cartProducts, setCartProducts] = useState(() =>
+    safeParse("cartProducts", [])
+  );
+  const [isCartUpdated, setIsCartUpdated] = useState(false);
+
+  // Search State
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
-  const [error, setError] = useState("");
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [user, setUser] = useState(() => {
-    let userProfile = localStorage.getItem("userProfile");
-    if (userProfile) {
-      return JSON.parse(userProfile);
-    }
-    return null;
-  });
-  const [products, setProducts] = useState([]);
-  const [cartProducts, setCartProducts] = useState(() => {
-    let cartProducts = localStorage.getItem("cartProducts");
-    if (cartProducts) {
-      return JSON.parse(cartProducts);
-    }
-    return null;
-  });
-  const [isCartUpdated, setIsCartUpdated] = useState(false);
-  const [invoices, setInvoices] = useState(() => {
-    let invoices = localStorage.getItem("invoices");
-    if (invoices) {
-      return JSON.parse(invoices);
-    }
-    return null;
-  });
-  console.log("invoices", invoices);
+  // Invoice State
+  const [invoices, setInvoices] = useState(() => safeParse("invoices", []));
+
+  /* ---------------- EFFECTS ---------------- */
 
   useEffect(() => {
-    const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
-    if (storedIsLoggedIn) {
-      setIsLoggedIn(JSON.parse(storedIsLoggedIn));
+    if (isLoggedIn) {
+      userProfileApi();
     }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    {
-      isLoggedIn && userProfileApi();
-    }
-    console.log("userProfileApi running");
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -66,8 +68,8 @@ export const AppContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    {
-      isCartUpdated && fetchCartProducts();
+    if (isCartUpdated) {
+      fetchCartProducts();
     }
   }, [isCartUpdated]);
 
@@ -75,12 +77,11 @@ export const AppContextProvider = ({ children }) => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
     window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  /* ---------------- API CALLS ---------------- */
 
   const userProfileApi = async () => {
     setLoading(true);
@@ -88,136 +89,119 @@ export const AppContextProvider = ({ children }) => {
       const response = await axios.get(`${server}/user/user-profile`, {
         withCredentials: true,
       });
-      setLoading(false);
       setUser(response.data.userData);
       localStorage.setItem(
         "userProfile",
         JSON.stringify(response.data.userData)
       );
-      console.log("user data", response.data.userData);
+      setIsLoggedIn(true);
+      localStorage.setItem("isLoggedIn", true);
     } catch (error) {
+      logoutAPICall();
+    } finally {
       setLoading(false);
-      if (error.response && error.response.status === 401) {
-        // Unauthorized error (token expired or invalid)
-        console.error("Unauthorized access. Logging out...");
-        logoutAPICall();
-        return;
-      }
-      console.error("Error fetching user data ", error);
     }
   };
 
   const logoutAPICall = async () => {
     await axios.get(`${server}/user/logout`, { withCredentials: true });
-    localStorage.removeItem("userProfile");
+    localStorage.clear();
     setUser(null);
     setIsLoggedIn(false);
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("cartProducts");
-    localStorage.removeItem("invoices");
     <Navigate to="/" />;
   };
 
   const fetchProducts = async () => {
-    setLoading(true);
     try {
-      const response = await axios.get(`${server}/products`, {
-        withCredentials: true,
-      });
-      setLoading(false);
-      setProducts(response.data.products);
-      console.log("products data", response.data.products);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching products data ", error);
+      const response = await axios.get(`${server}/products`);
+      setProducts(response.data.products || []);
+    } catch {
+      setProducts([]);
     }
   };
 
   const fetchCartProducts = async () => {
-    setLoading(true);
     try {
       const response = await axios.get(`${server}/cart/getCartProducts`, {
         withCredentials: true,
       });
-      setLoading(false);
-      setCartProducts(response.data.cartItems);
+      setCartProducts(response.data.cartItems || []);
       localStorage.setItem(
         "cartProducts",
-        JSON.stringify(response.data.cartItems)
+        JSON.stringify(response.data.cartItems || [])
       );
-      console.log("cart products data", response.data.cartItems);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching products from cart", error);
+    } catch {
+      setCartProducts([]);
     }
   };
+
   const fetchAllInvoices = async () => {
-    setLoading(true);
     try {
       const response = await axios.get(`${server}/orders/getAllOrders`, {
         withCredentials: true,
       });
-      setLoading(false);
-      setInvoices(response.data.allOrders);
-      localStorage.setItem("invoices", JSON.stringify(response.data.allOrders));
-      console.log("all orders data", response.data.allOrders);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching invoices", error);
+      setInvoices(response.data.allOrders || []);
+      localStorage.setItem(
+        "invoices",
+        JSON.stringify(response.data.allOrders || [])
+      );
+    } catch {
+      setInvoices([]);
     }
   };
 
   const fetchSearchResults = async (query) => {
     setLoading(true);
     try {
-      if (query.trim() === "") {
+      if (!query.trim()) {
         setSearchResults([]);
+        setIsSearching(false);
         return;
       }
+
       const response = await axios.get(
         `${server}/products/productSearch?search=${query}`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
-      setSearchResults(response.data);
-      setLoading(false);
+      setSearchResults(response.data || []);
+      setIsSearching(true);
     } catch (error) {
-      console.error("Error searching products:", error);
+      console.error("Search error", error);
+      setSearchResults([]);
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyUp = useCallback((e) => {
-    const delay = 300;
-    let timeoutId;
+  const searchTimeoutRef = useRef(null);
 
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      if (e.target.value.trim() === "") {
-        setIsSearching(false);
-      } else {
-        setIsSearching(true);
-        fetchSearchResults(e.target.value);
-      }
-    }, delay);
+  const handleKeyUp = useCallback((e) => {
+    const value = e.target.value.trim();
+
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (!value) {
+      setIsSearching(false);
+      setSearchResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+
+    searchTimeoutRef.current = setTimeout(() => {
+      fetchSearchResults(value);
+    }, 300);
   }, []);
 
   const handleAddToCart = async (productId, userId) => {
-    try {
-      await axios.post(
-        `${server}/cart/addProductToCart?productId=${productId}&userId=${userId}`
-      );
-      console.log("Product added to cart successfully!");
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-    } finally {
-      setIsCartUpdated(true);
-      setTimeout(() => {
-        setIsCartUpdated(false);
-      }, 1000);
-    }
+    await axios.post(
+      `${server}/cart/addProductToCart?productId=${productId}&userId=${userId}`
+    );
+    setIsCartUpdated(true);
+    setTimeout(() => setIsCartUpdated(false), 1000);
   };
 
   return (
@@ -238,11 +222,10 @@ export const AppContextProvider = ({ children }) => {
         handleKeyUp,
         searchResults,
         handleAddToCart,
-        fetchCartProducts,
         cartProducts,
-        setIsCartUpdated,
         invoices,
-        fetchAllInvoices,
+        fetchCartProducts,
+        setIsCartUpdated,
       }}
     >
       {children}
@@ -250,6 +233,4 @@ export const AppContextProvider = ({ children }) => {
   );
 };
 
-export const useAppContext = () => {
-  return useContext(AppContext);
-};
+export const useAppContext = () => useContext(AppContext);

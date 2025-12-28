@@ -15,16 +15,17 @@ export const Signup = () => {
     password: "",
   });
 
-  const { isMobile, loading, setLoading, setIsLoggedIn, error, setError } =
-    useAppContext();
+  // ✅ local form error (DO NOT use global error for forms)
+  const [formError, setFormError] = useState("");
 
+  const { isMobile, loading, setLoading, setIsLoggedIn } = useAppContext();
   const navigate = useNavigate();
 
-  // handling the input values
+  // handle input change
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
+    setUser((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -33,42 +34,44 @@ export const Signup = () => {
     e.preventDefault();
     setLoading(true);
 
+    // empty field validation
     if (
       !user.username.trim() ||
       !user.phone.trim() ||
       !user.email.trim() ||
       !user.password.trim()
     ) {
-      setError("*Required field");
+      setFormError("*Required field");
       setLoading(false);
       return;
     } else {
-      setError("");
+      setFormError("");
     }
 
-    // Validate name
+    // name validation
     if (user.username.length < 3) {
-      toast.error(
-        "Please enter a valid name. It should be at least 3 characters long."
-      );
+      toast.error("Name must be at least 3 characters");
       setLoading(false);
       return;
     }
-    // Validate phone number
+
+    // phone validation
     if (!/^\d{10}$/.test(user.phone)) {
-      toast.error("Please enter a valid 10-digit mobile number.");
+      toast.error("Enter a valid 10-digit mobile number");
       setLoading(false);
       return;
     }
-    // Validate email
+
+    // email validation
     if (!/^\S+@\S+\.\S+$/.test(user.email)) {
-      toast.error("Please enter a valid email address.");
+      toast.error("Enter a valid email address");
       setLoading(false);
       return;
     }
-    // Validate password
+
+    // password validation
     if (user.password.length < 8) {
-      toast.error("Please enter a password with at least 8 characters.");
+      toast.error("Password must be at least 8 characters");
       setLoading(false);
       return;
     }
@@ -84,120 +87,99 @@ export const Signup = () => {
         },
         {
           withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
-      if (response.status >= 200 && response.status < 300) {
-        setUser({ username: "", phone: "", email: "", password: "" });
-        console.log(response.data);
-        setLoading(false);
-        setIsLoggedIn(true);
-        localStorage.setItem("isLoggedIn", true);
-        navigate("/");
-        toast.success(response.data.message);
-      }
+      setUser({ username: "", phone: "", email: "", password: "" });
+      setIsLoggedIn(true);
+      localStorage.setItem("isLoggedIn", true);
+      toast.success(response.data.message || "Signup successful");
+      navigate("/");
     } catch (error) {
-      toast.error(error.response.data.message);
-      console.log("Error during registration", error);
-      setLoading(false);
+      // ✅ SAFE axios error handling
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed";
+
+      toast.error(message);
+
       setIsLoggedIn(false);
       localStorage.setItem("isLoggedIn", false);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className={styles.formContainer}>
-        <div className={styles.company}>
-          {isMobile ? (
-            <p>Welcome</p>
-          ) : (
-            <>
-              <img
-                src={musicicon}
-                alt=""
-                style={{ height: "3rem", width: "3rem" }}
-              />
-              <p>Musicart</p>
-            </>
-          )}
-        </div>
-        <form className={styles.form}>
-          <h1>Create Account</h1>
-          <label htmlFor="username">Your name</label>
-          <input
-            type="text"
-            autoComplete="off"
-            required
-            name="username"
-            id="username"
-            value={user.username}
-            onChange={handleInput}
-            style={error ? { border: "2px solid red" } : {}}
-          />
-          {error && <span className="errorText">{error}</span>}
-          <label htmlFor="phone">Mobile number</label>
-          <input
-            type="text"
-            autoComplete="off"
-            required
-            name="phone"
-            id="phone"
-            value={user.phone}
-            onChange={handleInput}
-            style={error ? { border: "2px solid red" } : {}}
-          />
-          {error && <span className="errorText">{error}</span>}
-          <label htmlFor="email">Email id</label>
-          <input
-            type="email"
-            autoComplete="off"
-            required
-            name="email"
-            id="email"
-            value={user.email}
-            onChange={handleInput}
-            style={error ? { border: "2px solid red" } : {}}
-          />
-          {error && <span className="errorText">{error}</span>}
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            autoComplete="off"
-            required
-            name="password"
-            id="password"
-            value={user.password}
-            onChange={handleInput}
-            style={error ? { border: "2px solid red" } : {}}
-          />
-          {error && <span className="errorText">{error}</span>}
-          <p>
-            By enrolling your mobile phone number, you consent to receive
-            automated security notifications via text message from Musicart.
-            Message and data rates may apply.
-          </p>
-
-          <button
-            disabled={error ? true : false}
-            type="submit"
-            onClick={(e) => signupHandler(e)}
-          >
-            {loading ? "Please wait..." : "Continue"}
-          </button>
-
-          <p>
-            By continuing, you agree to Musicart privacy notice and conditions
-            of use.
-          </p>
-        </form>
-        <div className={styles.nav}>
-          Already have an account? <Link to="/login">Sign in</Link>
-        </div>
+    <div className={styles.formContainer}>
+      <div className={styles.company}>
+        {isMobile ? (
+          <p>Welcome</p>
+        ) : (
+          <>
+            <img
+              src={musicicon}
+              alt=""
+              style={{ height: "3rem", width: "3rem" }}
+            />
+            <p>Musicart</p>
+          </>
+        )}
       </div>
-    </>
+
+      <form className={styles.form} onSubmit={signupHandler}>
+        <h1>Create Account</h1>
+
+        <label>Your name</label>
+        <input
+          type="text"
+          name="username"
+          value={user.username}
+          onChange={handleInput}
+          style={formError ? { border: "2px solid red" } : {}}
+        />
+        {formError && <span className="errorText">{formError}</span>}
+
+        <label>Mobile number</label>
+        <input
+          type="text"
+          name="phone"
+          value={user.phone}
+          onChange={handleInput}
+          style={formError ? { border: "2px solid red" } : {}}
+        />
+        {formError && <span className="errorText">{formError}</span>}
+
+        <label>Email id</label>
+        <input
+          type="email"
+          name="email"
+          value={user.email}
+          onChange={handleInput}
+          style={formError ? { border: "2px solid red" } : {}}
+        />
+        {formError && <span className="errorText">{formError}</span>}
+
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          value={user.password}
+          onChange={handleInput}
+          style={formError ? { border: "2px solid red" } : {}}
+        />
+        {formError && <span className="errorText">{formError}</span>}
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Please wait..." : "Continue"}
+        </button>
+      </form>
+
+      <div className={styles.nav}>
+        Already have an account? <Link to="/login">Sign in</Link>
+      </div>
+    </div>
   );
 };
