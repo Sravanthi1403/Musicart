@@ -57,6 +57,8 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchProducts();
+    fetchCartProducts();
+    fetchAllInvoices();
   }, []);
 
   useEffect(() => {
