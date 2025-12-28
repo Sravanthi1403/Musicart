@@ -22,21 +22,22 @@ const placeOrder = async (req, res, next) => {
     }
   };
 
-  const getAllOrders = async (req, res, next) =>{
+  const getMyOrders = async (req, res, next) =>{
     try {
-      const allOrders = await Order.find().populate({
+      const userId = req.user._id;
+      const userOrders = await Order.find({ userId }).populate({
         path: 'cartItems.productId',
         model: 'Product'
       });
-      if(!allOrders){
+      if(!userOrders || userOrders.length === 0 ){
         return next(new ErrorHandler(404, 'Invoices is Empty!!'));
       }
-      // console.log('orders data',allOrders)
-      res.status(200).json({message:'Fetched all orders successfully!', allOrders})
+      
+      res.status(200).json({message:'Fetched user invoices successfully!', userOrders})
     } catch (error) {
       console.error('Error fetching orders:', error);
       return next(new ErrorHandler(500,'Internal server error'));
     }
   }
   
-  module.exports = { placeOrder, getAllOrders };
+  module.exports = { placeOrder, getMyOrders };

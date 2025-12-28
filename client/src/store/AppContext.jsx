@@ -137,7 +137,7 @@ export const AppContextProvider = ({ children }) => {
 
   const fetchAllInvoices = async () => {
     try {
-      const response = await axios.get(`${server}/orders/getAllOrders`, {
+      const response = await axios.get(`${server}/orders/myOrders`, {
         withCredentials: true,
       });
       setInvoices(response.data.allOrders || []);

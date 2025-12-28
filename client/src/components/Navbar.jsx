@@ -35,12 +35,6 @@ export const Navbar = () => {
   const foundProduct = products.find((product) => product._id === id);
   console.log("found product", foundProduct);
   const getProductName = foundProduct ? foundProduct.name : "";
-  // const foundProduct =
-  // id && Array.isArray(products)
-  //   ? products.find((product) => product._id === id)
-  //   : null;
-
-  // const getProductName = foundProduct?.name || "";
 
   const mobilePaths = [
     "/login",
@@ -161,7 +155,7 @@ export const Navbar = () => {
                           location.pathname.startsWith("/invoice/") ? (
                             " "
                           ) : (
-                            <Link to="/invoices">Invoice</Link>
+                            <Link to="/invoices">Invoices</Link>
                           )}
                         </div>
                       ) : (

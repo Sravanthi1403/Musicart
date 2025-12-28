@@ -65,7 +65,7 @@ export const Footer = () => {
                   <Link to="/invoices">
                     <img src={invoice} alt="invoice" />
                   </Link>
-                  <p>Invoice</p>
+                  <p>Invoices</p>
                 </div>
               )}
               <div
