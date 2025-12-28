@@ -12,11 +12,27 @@ const cors = require("cors");
 
 dotenv.config({path: './.env'});
 app.use(cookieParser());
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://musicart-frontend-eight.vercel.app"
+];
+
 app.use(cors({
-    origin : 'https://musicart-frontend-eight.vercel.app/',
-    methods : [ "GET","POST","PUT","PATCH", "DELETE" ],
-    credentials : true,
+  origin: function (origin, callback) {
+    // allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods : [ "GET","POST","PUT","PATCH", "DELETE" ],
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
