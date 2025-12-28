@@ -140,10 +140,10 @@ export const AppContextProvider = ({ children }) => {
       const response = await axios.get(`${server}/orders/myOrders`, {
         withCredentials: true,
       });
-      setInvoices(response.data.allOrders || []);
+      setInvoices(response.data.userOrders || []);
       localStorage.setItem(
         "invoices",
-        JSON.stringify(response.data.allOrders || [])
+        JSON.stringify(response.data.userOrders || [])
       );
     } catch {
       setInvoices([]);
