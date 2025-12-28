@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 export const Checkout = () => {
   const { sum } = useParams();
 
-  const { isMobile, user, cartProducts, fetchCartProducts } = useAppContext();
+  const { isMobile, user, cartProducts, fetchCartProducts, fetchAllInvoices } =
+    useAppContext();
 
   console.log("Checkout cartProducts:", cartProducts);
   console.log("fetchCartProducts:", fetchCartProducts);
@@ -66,6 +67,7 @@ export const Checkout = () => {
         { withCredentials: true }
       );
       if (response.status >= 200 && response.status < 300) {
+        fetchAllInvoices();
         const deleteCartResponse = await axios.delete(
           `${server}/cart/deleteAllItems?userId=${user._id}`,
           { withCredentials: true }

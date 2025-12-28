@@ -226,6 +226,7 @@ export const AppContextProvider = ({ children }) => {
         invoices,
         fetchCartProducts,
         setIsCartUpdated,
+        fetchAllInvoices,
       }}
     >
       {children}
