@@ -12,11 +12,17 @@ class ErrorHandler extends Error {
 }
 
 const errorMiddleware = (err, req, res, next) => {
-    
-    return res.status(err.statusCode || 500).json({
-        success : false,
-        message : err.message|| "Internal Server Error",
+  res
+    .status(err.statusCode || 500)
+    .set({
+      "Access-Control-Allow-Origin": req.headers.origin,
+      "Access-Control-Allow-Credentials": "true"
     })
-}
+    .json({
+      success: false,
+      message: err.message || "Internal Server Error"
+    });
+};
+
 
 module.exports = {ErrorHandler, errorMiddleware}
