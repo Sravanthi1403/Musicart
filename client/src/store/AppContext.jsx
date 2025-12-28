@@ -56,16 +56,16 @@ export const AppContextProvider = ({ children }) => {
   /* ---------------- EFFECTS ---------------- */
 
   useEffect(() => {
-    if (isLoggedIn) {
-      userProfileApi();
-    }
-  }, [isLoggedIn]);
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
-    fetchProducts();
-    fetchCartProducts();
-    fetchAllInvoices();
-  }, []);
+    if (isLoggedIn) {
+      userProfileApi();
+      fetchCartProducts();
+      fetchAllInvoices();
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isCartUpdated) {
@@ -108,6 +108,8 @@ export const AppContextProvider = ({ children }) => {
     localStorage.clear();
     setUser(null);
     setIsLoggedIn(false);
+    setCartProducts([]);
+    setInvoices([]);
     <Navigate to="/" />;
   };
 
