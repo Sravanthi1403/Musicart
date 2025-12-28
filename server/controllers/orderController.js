@@ -5,8 +5,9 @@ const placeOrder = async (req, res, next) => {
     try {
       const { username, address, paymentMethod, cartProducts, orderPrice } = req.body;
       const order = new Order({
+        userId: req.user._id,
         username,
-        address:address.current,
+        address,
         paymentMethod,
         cartItems: cartProducts.map(product => ({
           productId: product.productId,
@@ -25,10 +26,12 @@ const placeOrder = async (req, res, next) => {
   const getMyOrders = async (req, res, next) =>{
     try {
       const userId = req.user._id;
+      console.log(userId);
       const userOrders = await Order.find({ userId }).populate({
         path: 'cartItems.productId',
         model: 'Product'
       });
+      console.log(userOrders);
       if(!userOrders || userOrders.length === 0 ){
         return next(new ErrorHandler(404, 'Invoices is Empty!!'));
       }
